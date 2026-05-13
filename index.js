@@ -26,17 +26,25 @@ const client = new MongoClient(uri, {
   }
 });
 
-
-const run=async()=> {
+const run = async () => {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
+
+    const db = client.db('simpaleCrud');
+    const userCollenctions = db.collection('users');
+
+    app.get('/users', async (req, res) => {
+      const cursor = userCollenctions.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+    console.log("Connected to MongoDB successfully");
+
+  } catch (err) {
+    console.log(err);
   }
-}
+};
+
 run().catch(console.dir);
