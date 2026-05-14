@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors=require('cors');
 const port = process.env.PORT || 5000
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 app.use(cors());
@@ -15,7 +15,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-
 
 
 
@@ -44,6 +43,18 @@ const run = async () => {
 
     await client.db("admin").command({ ping: 1 });
     console.log("Connected to MongoDB successfully");
+
+
+    // getting user id form database 
+    app.get('/users/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={
+        _id:new ObjectId(id)
+      }
+      const user=await userCollenctions.findOne(query)
+      console.log(id);
+      res.send(user)
+    })
 
   } catch (err) {
     console.log(err);
