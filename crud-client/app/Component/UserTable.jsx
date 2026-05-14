@@ -1,9 +1,12 @@
 import React from 'react';
 import { Button, Table } from '@heroui/react';
 import Link from 'next/link';
-import { TrashBin, PersonPencil } from "@gravity-ui/icons";
+import { PersonPencil } from "@gravity-ui/icons";
+import DeleteButton from './DeleteButton';
+import { deleteUser } from '../lib/actions';
 
 const UserTable = ({ userdata }) => {
+
     return (
         <Table>
             <Table.ScrollContainer>
@@ -31,9 +34,9 @@ const UserTable = ({ userdata }) => {
                                             <Link href={`/users/${user._id}`}>
                                                 <Button variant="secondary"><PersonPencil />Edit</Button>
                                             </Link>
-                                            <Link href={`/users/${user._id}`}>
-                                                <Button variant="danger"><TrashBin />Delete</Button>
-                                            </Link>
+
+                                            <DeleteButton user={user} deleteUserAction={deleteUser}></DeleteButton>
+
                                         </div>
                                     </Table.Cell>
                                 </Table.Row>

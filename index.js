@@ -52,8 +52,17 @@ const run = async () => {
         _id:new ObjectId(id)
       }
       const user=await userCollenctions.findOne(query)
-      console.log(id);
       res.send(user)
+    })
+
+    // deleting data form databased
+    app.delete('/users/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={
+              _id:new ObjectId(id)
+      }
+      const result=await userCollenctions.deleteOne(query)
+      res.send(result)
     })
 
   } catch (err) {
