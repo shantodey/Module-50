@@ -8,6 +8,7 @@ import { deleteUser } from '../lib/actions';
 const UserTable = ({ userdata }) => {
 
     return (
+        
         <Table>
             <Table.ScrollContainer>
                 <Table.Content aria-label="Team members" className="min-w-150">

@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const cors=require('cors');
+const cors = require('cors');
 const port = process.env.PORT || 5000
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -44,24 +44,30 @@ const run = async () => {
     await client.db("admin").command({ ping: 1 });
     console.log("Connected to MongoDB successfully");
 
+    // add user to database
+    app.post('/users', async (req, res) => {
+      const newUser = req.body;
+      const result = await userCollenctions.insertOne(newUser);
+      res.send(result);
+    })
 
     // getting user id form database 
-    app.get('/users/:id',async(req,res)=>{
-      const id=req.params.id;
-      const query={
-        _id:new ObjectId(id)
+    app.get('/users/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {
+        _id: new ObjectId(id)
       }
-      const user=await userCollenctions.findOne(query)
+      const user = await userCollenctions.findOne(query)
       res.send(user)
     })
 
     // deleting data form databased
-    app.delete('/users/:id',async(req,res)=>{
-      const id=req.params.id;
-      const query={
-              _id:new ObjectId(id)
+    app.delete('/users/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {
+        _id: new ObjectId(id)
       }
-      const result=await userCollenctions.deleteOne(query)
+      const result = await userCollenctions.deleteOne(query)
       res.send(result)
     })
 
