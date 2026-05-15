@@ -1,8 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors');
 const port = process.env.PORT || 5000
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
 
 
 app.use(cors());
@@ -19,6 +21,7 @@ app.listen(port, () => {
 
 
 
+const uri = `mongodb://${process.env.AUTH_DB_USER}:${process.env.AUTH_DB_PASS}@ac-g6hu4a8-shard-00-00.arj3hbe.mongodb.net:27017,ac-g6hu4a8-shard-00-01.arj3hbe.mongodb.net:27017,ac-g6hu4a8-shard-00-02.arj3hbe.mongodb.net:27017/?ssl=true&replicaSet=atlas-9o0py3-shard-0&authSource=admin&appName=Cluster0`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -68,6 +71,24 @@ const run = async () => {
         _id: new ObjectId(id)
       }
       const result = await userCollenctions.deleteOne(query)
+      res.send(result)
+    })
+
+    // update user data
+    app.patch('/user/:id', async(req,res)=>{
+      const id=req.params.id;
+      const filter={
+        _id:new ObjectId(id)
+      };
+      const modiFiedUser=req.body;
+      const updatedDocument={
+        $set:{
+          name:modiFiedUser.name,
+          email:modiFiedUser.email,
+          role:modiFiedUser.role
+        }
+      }
+      const result=await userCollenctions.updateOne(filter,updatedDocument)
       res.send(result)
     })
 

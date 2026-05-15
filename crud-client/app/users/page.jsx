@@ -21,8 +21,6 @@ const UsersPage = async () => {
             <AddUserModal createUserAction={createUser}></AddUserModal>
           </div>
         </div>
-
-        {/* User Cards */}
         <UserTable userdata={userdata}></UserTable>
       </div>
     </div>

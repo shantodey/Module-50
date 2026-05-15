@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const deleteUser = async (userId) => {
     'use server';
@@ -31,4 +32,23 @@ export const createUser = async (FormData) => {
         revalidatePath('/users');
     }
     return data
+}
+
+export const updateUser = async (userid, formData) => {
+    'use server'
+    const updateUserData = Object.fromEntries(formData.entries());
+    console.log(typeof updateUserData);
+    
+    const res = await fetch(`http://localhost:5000/user/${userid}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateUserData)
+    });
+    const data = await res.json()
+    if (data.modifiedCount > 0) {
+        revalidatePath('/users');
+        redirect('/users')
+    }
 }
